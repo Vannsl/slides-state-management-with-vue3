@@ -8,7 +8,7 @@
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/sky.css">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
@@ -16,8 +16,498 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h2>State Management mit der Composition API</h2>
+					<h2 class="r-fit-text">Vue ohne die Options API und ohne Vuex - ist das möglich?</h2>
+				</section>
+				<section>
+					<h2>Hallo!</h2>
+					<div class="grid">
+						<div style="font-size: 1.75rem; text-align: left;">
+							Vanessa Böhner, <a href="https://twitter.com/vannsl" target="_blank" rel="noopener">@vannsl</a><br>
+							<a href="https://vannsl.io" target="_blank" rel="noopener">vannsl.io</a>
+							<hr />
+							<ul>
+								<li>Lead Frontend <a href="https://zage.life" target="_blank" rel="noopener">Zavvy</a></li>
+								<li>Working Draft</li>
+								<li>expect(Exception)</li>
+								<li>Ausbaufähig</li>
+							</ul>
+							<hr />
+							past:
+							<ul>
+								<li>Program Committee JSKongress</li>
+								<li>Chapter Lead Frontend Foxes</li>
+							</ul>
+						</div>
+						<img data-src="img/vanessa_boehner.jpg">
+					</div>
+				</section>
+				<section>
+					<p>Vorneweg</p>
+					<p>Entschuldigung für das Denglisch und Anglizismen</p>
+				</section>
+				<section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vue 3</h2>
+						<p>Alternative Implementierungen</p>
+						<ul>
+							<li>ohne Options API</li>
+							<li>ohne Vuex</li>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vue 3</h2>
+						<p>Alternative Implementierungen</p>
+						<ul>
+							<li>ohne Options API</li>
+							<li>ohne Vuex</li>
+						</ul>
+						<p style="font-size: 2rem; margin-top: 3rem;">Die Techniken eignen sich für "Legacy" Vue 2 und Vue 3 Projekte.</p>
+					</section>
+				</section>
+				<section>
+					<h2>Tools</h2>
+					<ul>
+						<li>Vue 2 Codesandbox: <a href="https://codesandbox.io/s/vue" target="_blank" rel="noopener">http://vue.new/</a></li>
+						<li>Vue 3 SFC Playground: <a href="https://sfc.vuejs.org/" target="_blank" rel="noopener">sfc.vuejs.org/</a></li>
+					</ul>
+				</section>
+				<section>
+					<h2>💙 💚 Quellen 💚 💙</h2>
+					<ul>
+						<li><a href="https://markus.oberlehner.net/blog/group-extract-share-working-with-the-vue-composition-api/" target="_blank" rel="noopener">Group, Extract, Share Pattern</a> von <a href="https://markus.oberlehner.net/" target="_blank" rel="noopener">Markus Oberlehner</a></li>
+						<li><a href="https://vueschool.io/articles/vuejs-tutorials/state-management-with-composition-api/" target="_blank" rel="noopener">State Management with Composition API</a> von <a href="https://twitter.com/filrakowski?lang=de" target="_blank" rel="noopener">Filip Rakowski</a></li>
+						<li><a href="https://vuejsdevelopers.com/2020/10/05/composition-api-vuex/" target="_blank" rel="noopener">Should You Use Composition API as a Replacement for Vuex?</a> von <a href="https://twitter.com/anthonygore?lang=de" target="_blank" rel="noopener">Anthony Gore</a></li>
+					</ul>
+				</section>
+				<section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vue's APIs</h2>
+						<ul>
+							<li>Global API</li>
+							<li>Options API</li>
+							<li>Composition API</li>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vue's APIs</h2>
+						<ul>
+							<li>Global API</li>
+								<ul>
+									<li>Vue.use</li>
+									<li>Vue.nextTick</li>
+									<li>Vue.set</li>
+									<li>...</li>
+								</ul>
+							<li>Options API</li>
+							<li>Composition API</li>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vue's APIs</h2>
+						<ul>
+							<li>Global API</li>
+							<li>Options API</li>
+							<ul>
+								<li>data</li>
+								<li>computed</li>
+								<li>methods</li>
+								<li>watch</li>
+								<li>...</li>
+							</ul>
+							<li>Composition API</li>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vue's APIs</h2>
+						<ul>
+							<li>Global API</li>
+							<li>Options API</li>
+							<li>Composition API</li>
+								<ul>
+									<li>Setup</li>
+									<li>Composables</li>
+								</ul>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Recap: Options API</h2>
+						<pre><code class="hljs" data-trim data-line-numbers>
+							<template>
+								<p>{{ greeting }} {{ fullName }}!</p>
+							</template>
+							
+							<script>
+							export default {
+								name: "HelloWorld",
+								data: () => {
+									return {
+										greeting: "Hello"
+									}
+								},
+								props: {
+									firstName: {
+										type: String,
+										required: true
+									},
+									lastName: {
+										type: String,
+										required: true
+									}
+								},
+								computed: {
+									fullName: function() {
+										return `${this.firstName} ${this.lastName}`
+									}
+								},
+								methods: {
+									// ...
+								},
+								mounted: function() {
+									// ...
+								}
+							};
+							</script>
+						</code></pre>
+						<a style="font-size: 1rem;" href="https://codesandbox.io/s/state-management-composition-api-tklyi?file=/src/components/HelloWorld.vue" target="_blank" rel="noopener">Code Example</a>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Das Problem Nr. 1</h2>
+						<p>
+							Durch die Objektstruktur der Vue Options API sind zusammengehörende Codesnippets verteilt über den gesamten script Block. Attribute befinden sich in data, Berechnungen in den computed properties und Updates in den Lifecycle Hooks. Je größer die Komponente wird, desto schwerer wird es zu überblicken sein, welche Bereiche logisch gesehen zusammengehören.
+						</p>
+						<a style="font-size: 1rem;" href="https://codesandbox.io/s/state-management-composition-api-tklyi?file=/src/components/HelloWorld.vue" target="_blank" rel="noopener">Code Example</a>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<p>Logik verteilt über die Datei</p>
+						<div class="grid">
+							<img data-src="img/options_api_1.png">
+						</div>
+						<a href="https://v3.vuejs.org/guide/migration/introduction.html#overview" target="_blank" rel="noopener" style="font-size: 1rem;">Quelle</a>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<p>Logik zusammenhängend</p>
+						<div class="grid">
+							<img data-src="img/options_api_1.png">
+							<img data-src="img/options_api_2.png">
+						</div>
+						<a href="https://v3.vuejs.org/guide/migration/introduction.html#overview" target="_blank" rel="noopener" style="font-size: 1rem;">Quelle</a>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Die Lösung?</h2>
+						<p>
+							<quote>"Mach' die Komponente kleiner!"</quote>
+						</p>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Das Problem Nr. 2</h2>
+						<p>
+							Ein bekanntes Dilemma: Zwei Komponenten sind sich sehr ähnlich, aber doch nicht gleich. Wir könnten über die Elternkomponente Properties herunterreichen, um die Komponente anzupassen. Oft endet das in einem Property-Disaster und die ganze Komponente wird unverständlich. Oder teilen wir die Komponente in zwei verschiedene auf? Dann müssten wir allerdings beide anpassen, wenn sich eine gleiche Eigenschaft beider ändert.
+						</p>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Mixins, die Lösung?</h2>
+						<pre><code class="hljs" data-trim data-line-numbers>
+							// define a mixin object
+							var myMixin = {
+								created: function () {
+									this.hello()
+								},
+								methods: {
+									hello: function () {
+										console.log('hello from mixin!')
+									}
+								}
+							}
+
+							// define a component that uses this mixin
+							var Component = Vue.extend({
+								mixins: [myMixin]
+							})
+
+							var component = new Component() // => "hello from mixin!"												
+						</code></pre>
+						<a href="https://vuejs.org/v2/guide/mixins.html" target="_blank" rel="noopener" style="font-size: 1rem;">https://vuejs.org/v2/guide/mixins.html</a>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Composition API</h2>
+						<h2>Setup Function</h2>
+						<img data-src="img/workshop.png">
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Composition API</h2>
+						<p>Die Composition API ermöglicht Entwickler:innen eine logische Einheit von allem anderen abzukapseln. Dadurch kann sie an beliebig vielen Stellen in der Applikation eingesetzt werden.</p>
+					</section>
+
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Composition API</h2>
+						<p style="color: grey">Die Composition API ermöglicht Entwickler:innen eine logische Einheit von allem anderen abzukapseln. Dadurch kann sie an beliebig vielen Stellen in der Applikation eingesetzt werden.</p>
+						<p>Okay, das war trocken. <a href="https://sfc.vuejs.org/#eyJBcHAudnVlIjoiPHRlbXBsYXRlPlxuICA8SGVsbG9Xb3JsZDUgZmlyc3QtbmFtZT1cIlZhbmVzc2FcIiBsYXN0LW5hbWU9XCJCw7ZobmVyXCIgLz5cbjwvdGVtcGxhdGU+XG5cbjxzY3JpcHQ+XG4gIGltcG9ydCBIZWxsb1dvcmxkIGZyb20gXCIuL0hlbGxvV29ybGQudnVlXCI7XG4gIGltcG9ydCBIZWxsb1dvcmxkMiBmcm9tIFwiLi9IZWxsb1dvcmxkMi52dWVcIjtcbiAgaW1wb3J0IEhlbGxvV29ybGQzIGZyb20gXCIuL0hlbGxvV29ybGQzLnZ1ZVwiO1xuICBpbXBvcnQgSGVsbG9Xb3JsZDQgZnJvbSBcIi4vSGVsbG9Xb3JsZDQudnVlXCI7XG4gIGltcG9ydCBIZWxsb1dvcmxkNSBmcm9tIFwiLi9IZWxsb1dvcmxkNF9hbHRlcm5hdGl2ZS52dWVcIjtcblxuICBleHBvcnQgZGVmYXVsdCB7XG4gICAgbmFtZTogXCJBcHBcIixcbiAgICBjb21wb25lbnRzOiB7XG4gICAgICBIZWxsb1dvcmxkLFxuICAgICAgSGVsbG9Xb3JsZDIsXG4gICAgICBIZWxsb1dvcmxkMyxcbiAgICAgIEhlbGxvV29ybGQ0LFxuICAgICAgSGVsbG9Xb3JsZDUsXG4gICAgfVxuICB9XG48L3NjcmlwdD4iLCJIZWxsb1dvcmxkLnZ1ZSI6Ijx0ZW1wbGF0ZT5cbiAgPGgxPlxuICAgIEhlbGxvV29ybGRcbiAgPC9oMT5cbiAge3sgZ3JlZXRpbmcgfX0ge3sgZnVsbE5hbWUgfX1cbjwvdGVtcGxhdGU+XG5cbjxzY3JpcHQ+XG4gIGltcG9ydCB7IGNvbXB1dGVkIH0gZnJvbSBcInZ1ZVwiO1xuXG4gIGV4cG9ydCBkZWZhdWx0IHtcbiAgICBuYW1lOiBcIkhlbGxvV29ybGRcIixcbiAgICBwcm9wczoge1xuICAgICAgZmlyc3ROYW1lOiB7XG4gICAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgICB9LFxuICAgICAgbGFzdE5hbWU6IHtcbiAgICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgICByZXF1aXJlZDogdHJ1ZSxcbiAgICAgIH0sXG4gICAgfSxcbiAgICBzZXR1cChwcm9wcykge1xuICAgICAgY29uc3QgZ3JlZXRpbmcgPSBcIkhlbGxvXCI7IC8vIG5vdCByZWFjdGl2ZSwgY29vbCBodWg/XG4gICAgICBjb25zdCBmdWxsTmFtZSA9IGNvbXB1dGVkKCgpID0+IGAke3Byb3BzLmZpcnN0TmFtZX0gJHtwcm9wcy5sYXN0TmFtZX1gKTtcblxuICAgICAgcmV0dXJuIHtcbiAgICAgICAgZ3JlZXRpbmcsXG4gICAgICAgIGZ1bGxOYW1lXG4gICAgICB9XG4gICAgfVxuICB9XG48L3NjcmlwdD4iLCJIZWxsb1dvcmxkMi52dWUiOiI8dGVtcGxhdGU+XG4gIDxoMT5cbiAgICBIZWxsb1dvcmxkIDJcbiAgPC9oMT5cbiAge3sgZ3JlZXRpbmcgfX0ge3sgZnVsbE5hbWUgfX0uXG4gIDxwPlxuICAgIFRoZXNlIGFyZSB5b3VyIGl0ZW1zOlxuICA8L3A+XG4gIDx1bD5cbiAgICA8bGkgdi1mb3I9XCJpdGVtIGluIGl0ZW1zXCIgOmtleT1cIml0ZW0uaWRcIj5cbiAgICAgIHt7aXRlbS5jb3VudH19eCA8c3Ryb25nPnt7IGl0ZW0ubmFtZSB9fTwvc3Ryb25nPlxuICAgICAgPGJ1dHRvbiBAY2xpY2s9XCJkZWxldGVJdGVtKGl0ZW0uaWQpXCI+XG4gICAgICAgIGRlbGV0ZVxuICAgICAgPC9idXR0b24+XG4gICAgPC9saT5cbiAgPC91bD5cbjwvdGVtcGxhdGU+XG5cbjxzY3JpcHQ+XG4gIGltcG9ydCB7IGNvbXB1dGVkLCByZWYgfSBmcm9tIFwidnVlXCI7XG4gXG4gIGV4cG9ydCBkZWZhdWx0IHtcbiAgICBuYW1lOiBcIkhlbGxvV29ybGRcIixcbiAgICBwcm9wczoge1xuICAgICAgZmlyc3ROYW1lOiB7XG4gICAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgICB9LFxuICAgICAgbGFzdE5hbWU6IHtcbiAgICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgICByZXF1aXJlZDogdHJ1ZSxcbiAgICAgIH0sXG4gICAgfSxcbiAgICBzZXR1cChwcm9wcykge1xuICAgICAgY29uc3QgZ3JlZXRpbmcgPSBcIkhlbGxvXCI7IC8vIG5vdCByZWFjdGl2ZSwgY29vbCBodWg/XG4gICAgICBjb25zdCBmdWxsTmFtZSA9IGNvbXB1dGVkKCgpID0+IGAke3Byb3BzLmZpcnN0TmFtZX0gJHtwcm9wcy5sYXN0TmFtZX1gKTtcbiAgICAgIFxuICAgICAgY29uc3QgaXRlbXMgPSByZWYoW1xuICAgICAgICB7XG4gICAgICAgICAgaWQ6IDAsXG4gICAgICAgICAgbmFtZTogXCJFZ2dzXCIsXG4gICAgICAgICAgY291bnQ6IDEwXG4gICAgICAgIH0sXG4gICAgICAgIHtcbiAgICAgICAgICBpZDogMSxcbiAgICAgICAgICBuYW1lOiBcIkZyZXNoIE1pbGtcIixcbiAgICAgICAgICBjb3VudDogMVxuICAgICAgICB9XG4gICAgICBdKVxuICAgICAgXG4gICAgICBmdW5jdGlvbiBkZWxldGVJdGVtKGlkKSB7XG4gICAgICAgIGl0ZW1zLnZhbHVlID0gaXRlbXMudmFsdWUuZmlsdGVyKGl0ZW0gPT4gaXRlbS5pZCAhPT0gaWQpO1xuICAgICAgfVxuICAgICAgXG4gICAgICByZXR1cm4ge1xuICAgICAgICBncmVldGluZyxcbiAgICAgICAgZnVsbE5hbWUsXG4gICAgICAgIGl0ZW1zLFxuICAgICAgICBkZWxldGVJdGVtXG4gICAgICB9XG4gICAgfVxuICB9XG48L3NjcmlwdD5cbiIsIkhlbGxvV29ybGQzLnZ1ZSI6Ijx0ZW1wbGF0ZT5cbiAgPGgxPlxuICAgIEhlbGxvV29ybGQgM1xuICA8L2gxPlxuICB7eyBncmVldGluZyB9fSB7eyBmdWxsTmFtZSB9fS5cbiAgPHA+VGhlc2UgYXJlIHlvdXIgaXRlbXM6PC9wPlxuICA8dWw+XG4gICAgPGxpIHYtZm9yPVwiaXRlbSBpbiBpdGVtc1wiIDprZXk9XCJpdGVtLmlkXCI+XG4gICAgICB7e2l0ZW0uY291bnR9fXggPHN0cm9uZz57eyBpdGVtLm5hbWUgfX08L3N0cm9uZz5cbiAgICAgIDxidXR0b24gQGNsaWNrPVwiZGVsZXRlSXRlbShpdGVtLmlkKVwiPlxuICAgICAgICBkZWxldGVcbiAgICAgIDwvYnV0dG9uPlxuICAgIDwvbGk+XG4gIDwvdWw+XG48L3RlbXBsYXRlPlxuXG48c2NyaXB0PlxuaW1wb3J0IHsgY29tcHV0ZWQsIHJlZiB9IGZyb20gXCJ2dWVcIjtcblxuZnVuY3Rpb24gdXNlR3JlZXRpbmcoZmlyc3ROYW1lLCBsYXN0TmFtZSkge1xuICBjb25zdCBncmVldGluZyA9IFwiSGVsbG9cIjtcbiAgY29uc3QgZnVsbE5hbWUgPSBjb21wdXRlZCgoKSA9PiBgJHtmaXJzdE5hbWV9ICR7bGFzdE5hbWV9YCk7XG5cbiAgcmV0dXJuIHtcbiAgICBncmVldGluZyxcbiAgICBmdWxsTmFtZSxcbiAgfTtcbn1cblxuZnVuY3Rpb24gdXNlSXRlbXMoKSB7XG4gIGNvbnN0IGl0ZW1zID0gcmVmKFtcbiAgICB7XG4gICAgICBpZDogMCxcbiAgICAgIG5hbWU6IFwiRWdnc1wiLFxuICAgICAgY291bnQ6IDEwLFxuICAgIH0sXG4gICAge1xuICAgICAgaWQ6IDEsXG4gICAgICBuYW1lOiBcIkZyZXNoIE1pbGtcIixcbiAgICAgIGNvdW50OiAxLFxuICAgIH0sXG4gIF0pO1xuXG4gIGZ1bmN0aW9uIGRlbGV0ZUl0ZW0oaWQpIHtcbiAgICBpdGVtcy52YWx1ZSA9IGl0ZW1zLnZhbHVlLmZpbHRlcigoaXRlbSkgPT4gaXRlbS5pZCAhPT0gaWQpO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBpdGVtcyxcbiAgICBkZWxldGVJdGVtLFxuICB9O1xufVxuXG5leHBvcnQgZGVmYXVsdCB7XG4gIG5hbWU6IFwiSGVsbG9Xb3JsZFwiLFxuICBwcm9wczoge1xuICAgIGZpcnN0TmFtZToge1xuICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgfSxcbiAgICBsYXN0TmFtZToge1xuICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgfSxcbiAgfSxcbiAgc2V0dXAocHJvcHMpIHtcbiAgICBjb25zdCB7IGdyZWV0aW5nLCBmdWxsTmFtZSB9ID0gdXNlR3JlZXRpbmcocHJvcHMuZmlyc3ROYW1lLCBwcm9wcy5sYXN0TmFtZSk7XG4gICAgY29uc3QgeyBpdGVtcywgZGVsZXRlSXRlbSB9ID0gdXNlSXRlbXMoKTtcblxuICAgIHJldHVybiB7XG4gICAgICBncmVldGluZyxcbiAgICAgIGZ1bGxOYW1lLFxuICAgICAgaXRlbXMsXG4gICAgICBkZWxldGVJdGVtLFxuICAgIH07XG4gIH0sXG59O1xuPC9zY3JpcHQ+XG4iLCJ1c2VJdGVtcy5qcyI6ImltcG9ydCB7IHJlZiB9IGZyb20gXCJ2dWVcIjtcblxuZXhwb3J0IGZ1bmN0aW9uIHVzZUl0ZW1zKCkge1xuICBjb25zdCBpdGVtcyA9IHJlZihbXG4gICAge1xuICAgICAgaWQ6IDAsXG4gICAgICBuYW1lOiBcIkVnZ3NcIixcbiAgICAgIGNvdW50OiAxMCxcbiAgICB9LFxuICAgIHtcbiAgICAgIGlkOiAxLFxuICAgICAgbmFtZTogXCJGcmVzaCBNaWxrXCIsXG4gICAgICBjb3VudDogMSxcbiAgICB9LFxuICBdKTtcblxuICBmdW5jdGlvbiBkZWxldGVJdGVtKGlkKSB7XG4gICAgaXRlbXMudmFsdWUgPSBpdGVtcy52YWx1ZS5maWx0ZXIoKGl0ZW0pID0+IGl0ZW0uaWQgIT09IGlkKTtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgaXRlbXMsXG4gICAgZGVsZXRlSXRlbSxcbiAgfTtcbn1cbiIsIkhlbGxvV29ybGQ0LnZ1ZSI6Ijx0ZW1wbGF0ZT5cbiAgPGgxPlxuICAgIEhlbGxvV29ybGQgNFxuICA8L2gxPlxuICB7eyBncmVldGluZyB9fSB7eyBmdWxsTmFtZSB9fS5cbiAgPHA+VGhlc2UgYXJlIHlvdXIgaXRlbXM6PC9wPlxuICA8dWw+XG4gICAgPGxpIHYtZm9yPVwiaXRlbSBpbiBpdGVtc1wiIDprZXk9XCJpdGVtLmlkXCI+XG4gICAgICB7e2l0ZW0uY291bnR9fXggPHN0cm9uZz57eyBpdGVtLm5hbWUgfX08L3N0cm9uZz5cbiAgICAgIDxidXR0b24gQGNsaWNrPVwiZGVsZXRlSXRlbShpdGVtLmlkKVwiPlxuICAgICAgICBkZWxldGVcbiAgICAgIDwvYnV0dG9uPlxuICAgIDwvbGk+XG4gIDwvdWw+XG48L3RlbXBsYXRlPlxuXG48c2NyaXB0PlxuaW1wb3J0IHsgY29tcHV0ZWQgfSBmcm9tIFwidnVlXCI7XG5pbXBvcnQgeyB1c2VJdGVtcyB9IGZyb20gXCIuL3VzZUl0ZW1zLmpzXCI7XG5pbXBvcnQgSGVsbG9Xb3JsZCBmcm9tIFwiLi9IZWxsb1dvcmxkLnZ1ZVwiO1xuXG5mdW5jdGlvbiB1c2VHcmVldGluZyhmaXJzdE5hbWUsIGxhc3ROYW1lKSB7XG4gIGNvbnN0IGdyZWV0aW5nID0gXCJIZWxsb1wiO1xuICBjb25zdCBmdWxsTmFtZSA9IGNvbXB1dGVkKCgpID0+IGAke2ZpcnN0TmFtZX0gJHtsYXN0TmFtZX1gKTtcblxuICByZXR1cm4ge1xuICAgIGdyZWV0aW5nLFxuICAgIGZ1bGxOYW1lLFxuICB9O1xufVxuXG5leHBvcnQgZGVmYXVsdCB7XG4gIG5hbWU6IFwiSGVsbG9Xb3JsZFwiLFxuICBwcm9wczoge1xuICAgIGZpcnN0TmFtZToge1xuICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgfSxcbiAgICBsYXN0TmFtZToge1xuICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgfSxcbiAgfSxcbiAgc2V0dXAocHJvcHMpIHtcbiAgICBjb25zdCB7IGdyZWV0aW5nLCBmdWxsTmFtZSB9ID0gdXNlR3JlZXRpbmcocHJvcHMuZmlyc3ROYW1lLCBwcm9wcy5sYXN0TmFtZSk7XG4gICAgY29uc3QgeyBpdGVtcywgZGVsZXRlSXRlbSB9ID0gdXNlSXRlbXMoKTtcblxuICAgIHJldHVybiB7XG4gICAgICBncmVldGluZyxcbiAgICAgIGZ1bGxOYW1lLFxuICAgICAgaXRlbXMsXG4gICAgICBkZWxldGVJdGVtLFxuICAgIH07XG4gIH0sXG59O1xuPC9zY3JpcHQ+XG4iLCJIZWxsb1dvcmxkNF9hbHRlcm5hdGl2ZS52dWUiOiI8dGVtcGxhdGU+XG4gIDxoMT5cbiAgICBIZWxsb1dvcmxkIDQgQWx0ZXJuYXRpdmVcbiAgPC9oMT5cbiAge3sgZ3JlZXRpbmcgfX0ge3sgZnVsbE5hbWUgfX0uXG4gIDxwPlRoZXNlIGFyZSB5b3VyIGl0ZW1zOjwvcD5cbiAgPHVsPlxuICAgIDxsaSB2LWZvcj1cIml0ZW0gaW4gaXRlbXNcIiA6a2V5PVwiaXRlbS5pZFwiPlxuICAgICAge3tpdGVtLmNvdW50fX14IDxzdHJvbmc+e3sgaXRlbS5uYW1lIH19PC9zdHJvbmc+XG4gICAgICA8YnV0dG9uIEBjbGljaz1cImRlbGV0ZUl0ZW0oaXRlbS5pZClcIj5cbiAgICAgICAgZGVsZXRlXG4gICAgICA8L2J1dHRvbj5cbiAgICA8L2xpPlxuICA8L3VsPlxuPC90ZW1wbGF0ZT5cblxuPHNjcmlwdCBzZXR1cD5cbmltcG9ydCB7IGNvbXB1dGVkLCBkZWZpbmVQcm9wcyB9IGZyb20gXCJ2dWVcIjtcbmltcG9ydCB7IHVzZUl0ZW1zIH0gIGZyb20gXCIuL3VzZUl0ZW1zLmpzXCI7XG5pbXBvcnQgSGVsbG9Xb3JsZCBmcm9tIFwiLi9IZWxsb1dvcmxkLnZ1ZVwiO1xuIFxuY29uc3QgcHJvcHMgPSBkZWZpbmVQcm9wcyh7XG4gIGZpcnN0TmFtZToge1xuICAgIHR5cGU6IFN0cmluZyxcbiAgICByZXF1aXJlZDogdHJ1ZSxcbiAgfSxcbiAgbGFzdE5hbWU6IHtcbiAgICB0eXBlOiBTdHJpbmcsXG4gICAgcmVxdWlyZWQ6IHRydWUsXG4gIH0sXG59KVxuXG5mdW5jdGlvbiB1c2VHcmVldGluZyhmaXJzdE5hbWUsIGxhc3ROYW1lKSB7XG4gIGNvbnN0IGdyZWV0aW5nID0gXCJIZWxsb1wiO1xuICBjb25zdCBmdWxsTmFtZSA9IGNvbXB1dGVkKCgpID0+IGAke2ZpcnN0TmFtZX0gJHtsYXN0TmFtZX1gKTtcblxuICByZXR1cm4ge1xuICAgIGdyZWV0aW5nLFxuICAgIGZ1bGxOYW1lLFxuICB9O1xufVxuXG5jb25zdCB7IGdyZWV0aW5nLCBmdWxsTmFtZSB9ID0gdXNlR3JlZXRpbmcocHJvcHMuZmlyc3ROYW1lLCBwcm9wcy5sYXN0TmFtZSk7XG48L3NjcmlwdD5cbiJ9" target="_blank" rel="noopener">Beispiele bitte!</a></p>
+					</section>
+					<section>
+						Somit: Composition API bzw. setup() Funktion <strong>nicht nur</strong> für geteilte Funktionalitäten nutzbar.<br>
+						Der Anwendungsfall hängt von dem konkreten Projekt ab.<br>
+						<pre><code class="hljs" data-trim data-line-numbers>
+							new DefinePlugin({
+								__VUE_OPTIONS_API__: false,
+								__VUE_PROD_DEVTOOLS__: false,
+							})											
+						</code></pre>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Tipps & Ticks</h2>
+						<ul>
+							<li>
+								Wird die Setup Funktion nicht irgendwann unübersichtlich? Group, Share, Extract!
+							</li>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Tipps & Ticks</h2>
+						<ul>
+							<li>
+								Wird die Setup Funktion nicht irgendwann unübersichtlich? <a href="https://markus.oberlehner.net/blog/group-extract-share-working-with-the-vue-composition-api/" target="_blank" rel="noopener">Group, Extract, Share Pattern</a> von Markus Oberlehner
+							</li>
+							<li>
+								Hilfe, ich möchte mit Composables anfangen, aber ich weiß nicht wie! <a href ="https://github.com/vueuse/" target="_blank" rel="noopener">Vue Use</a>
+							</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>State Management</h2>
+						<ol>
+							<li>Props - Emit/Event Handling</li>
+							<li>Global Root</li>
+							<li>Vuex</li>
+						</ol>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>State Management</h2>
+						<ol>
+							<li><strong>Props - Emit/Event Handling</strong></li>
+							<li>Global Root</li>
+							<li>Vuex</li>
+						</ol>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Props & Emit</h2>
+						<pre><code class="hljs" data-trim data-line-numbers>
+							<!-- Root Component -->
+							<template>
+								<person
+								  :items="[{...}]"
+									first-name="Vanessa"
+									last-name="Böhner"
+									@removeItem="handleRemoveItem"
+								>
+									<!-- ... -->
+								</person>
+							</template>												
+						</code></pre>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Props & Emit</h2>
+						<pre><code class="hljs" data-trim data-line-numbers>
+							<!-- Person Component -->
+							<template>
+								<p>{{ greeting }} {{ fullName }}!</p>
+								<items
+								  :items="[{...}]"
+									@remove-item="$emit('remove-item')"
+								>
+									<!-- ... -->
+							  </items>
+							</template>
+							
+							<script>
+								export default {
+									name: "Person",
+									data: () => {
+										return {
+											greeting: "Hello",
+										};
+									},
+									props: {
+										firstName: {
+											type: String,
+											required: true,
+										},
+										lastName: {
+											type: String,
+											required: true,
+										},
+										items: {
+											type: Array,
+											default: () => []
+										}
+									},
+									emits: ["removed-item"],
+									computed: {
+										fullName: function () {
+											return `${this.firstName} ${this.lastName}`;
+										},
+									},
+								};
+								</script>
+						</code></pre>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Props & Emit</h2>
+						<pre><code class="hljs" data-trim data-line-numbers>
+							<!-- Items Component -->
+							<template>
+								<ul class="items">
+									<li v-for="item in items" :key="item.id">
+										<div>
+											{{ item.count }}x <strong>{{ item.name }}</strong>
+										</div>
+										<button @click="$emit('remove-item', item.id)">delete</button>
+									</li>
+								</ul>
+							</template>
+							
+							<script>
+								export default {
+									name: "Items",
+									props: {
+										items: {
+											type: Array,
+											default: () => []
+										}
+									},
+									emits: ["removed-item"],
+								};
+								</script>
+						</code></pre>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>State Management</h2>
+						<ol>
+							<li><strong>Props - Emit/Event Handling</strong></li>
+								<ul>
+								 <li><a href="https://kentcdodds.com/blog/prop-drilling" target="_blank" rel="noopener">Prop Drilling</a></li>
+								</ul>
+							<li>Global Root</li>
+							<li>Vuex</li>
+						</ol>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>State Management</h2>
+						<ol>
+							<li>Props - Emit/Event Handling</li>
+							<li><strong><a href="https://v3.vuejs.org/api/instance-properties.html#root" target="_blank" rel="noopener">Global Root</a></strong></li>
+							<li>Vuex</li>
+						</ol>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>State Management</h2>
+						<ol>
+							<li>Props - Emit/Event Handling</li>
+							<li>Global Root</li>
+							<li><strong>Vuex</strong></li>
+						</ol>
+					</section>
+					<section>
+						<h2>Vuex</h2>
+						<div><img data-src="https://vuex.vuejs.org/vuex.png" alt="Vuex"/></div>
+						<p><a href="https://vuex.vuejs.org/#what-is-a-state-management-pattern" target="_blank" rel="noopener" style="font-size: 1rem;">Quelle</a></p>
+					</section>
+					<section>
+						<h2>State von Vuex in Vue 3</h2>
+						<p>Next version verfügbar</p>
+					  <a href ="https://next.vuex.vuejs.org/guide/migrating-to-4-0-from-3-x.html" target="_blank" rel="noopener">
+							Migrating to 4.0 from 3.x
+						</a>
+					</section>
+					<section>
+						<h2><a href="https://facebook.github.io/flux/" target="_blank" rel="noopener">Flux</a> Prinzipien</h2>
+						<ol>
+							<li>Single Source of Truth</li>
+							<li>Data ist read-only</li>
+							<li>Synchronität</li>
+						</ol>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vuex Stolpersteine</h2>
+						<ul>
+							<li>Brauche ich Vuex wirklich?</li>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vuex Stolpersteine</h2>
+						<ul>
+							<li>Brauche ich Vuex wirklich?</li>
+							<li>
+								<code>store.state, store.commit, store.dispatch</code> vs. <code>mapState, mapGetters, mapMutations, mapActions</code>
+							</li>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vuex Stolpersteine</h2>
+						<ul>
+							<li>Brauche ich Vuex wirklich?</li>
+							<li>
+								<code>store.state, store.commit, store.dispatch</code> vs. <code>mapState, mapGetters, mapMutations, mapActions</code>
+							</li>
+							<li>
+								Direkt Mutation aufrufen oder immer über Action?
+							</li>
+						</ul>
+					</section>
+					<section data-auto-animate data-auto-animate-unmatched="fade">
+						<h2>Vuex Stolpersteine</h2>
+						<ul>
+							<li>Brauche ich Vuex wirklich?</li>
+							<li>
+								<code>store.state, store.commit, store.dispatch</code> vs. <code>mapState, mapGetters, mapMutations, mapActions</code>
+							</li>
+							<li>
+								Direkt Mutation aufrufen oder immer über Action?
+							</li>
+							<li>
+								Direkt auf den State zugreifen oder immer über Getters?
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Mehr über Vuex</h2>
+						<img data-src="img/workshop_2.png">
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Vue 3</h2>
+						<p>Alternative Implementierungen</p>
+						<ul>
+							<li>ohne Options API</li>
+							<li>ohne Vuex</li>
+						</ul>
+						<p><a href="https://twitter.com/vannsl/status/1322162179236417536?s=20" target="_blank" rel="noopener">Tweet</a></p>
+					</section>
+					<section>
+						<h2>Local and Global State Management Composable</h2>
+						<a href="https://codesandbox.io/s/global-state-management-08c0o" target="_blank" rel="noopener">Examples</a>
+					</section>
+					<section>
+						<h2>Global Store Alternative</h2>
+						<p>using <a href="https://v3.vuejs.org/guide/component-provide-inject.html" target="_blank" rel="noopener"><code>provide/inject</code></a></p>
+						<a href="https://codesandbox.io/s/global-state-management-provide-inject-f6fyu" target="_blank" rel="noopener">Examples</a>
+					</section>
+				</section>
+				<section>
+					<h2>Thank you!</h2>
+					<ul>
+						<li>
+							🐦 <a href="https://twitter.com/vannsl" target="_blank" rel="noopener">@vannsl</a>
+						</li>
+						<li>
+							👩‍💻 <a href="https://zage.life" target="_blank" rel="noopener">Zavvy</a>
+						</li>
+					</ul>
+				</section>
 			</div>
 		</div>
 
