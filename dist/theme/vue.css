@@ -30,6 +30,7 @@
    --heading2-size: 1.6em;
    --heading3-size: 1.3em;
    --heading4-size: 1em;
+   --heading5-size: 0.75em;
    --code-font: monospace;
    --link-color: #3eaf7c;
    --link-color-dark: #1a53a1;
@@ -97,7 +98,7 @@
  }
  
  .reveal h3 {
-   font-size: var(--heading3-size);
+   font-size: var(--heading5-size);
  }
  
  .reveal h4 {
