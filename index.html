@@ -17,7 +17,7 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h2>State Management with Composition API</h2>
+					<h2>A journey from Options API to Composition API</h2>
 				</section>
 				<section>
 					<h2>Hello</h2>
@@ -26,7 +26,7 @@
 							<div style="display: flex; align-items: center; gap: 1rem">
 								<img data-src="img/vanessa_otto.jpeg" style="border-radius: 50%; width: 20%">
 								<div>
-									Vanessa Otto
+									Vanessa Otto 🍻🥨
 									<br><a href="https://twitter.com/vannsl" target="_blank" rel="noopener">@vannsl</a>, 
 									<a href="https://vannsl.io" target="_blank" rel="noopener">vannsl.io</a><br>
 									Tech Lead Frontend <a href="https://zavvy.io" target="_blank" rel="noopener">Zavvy.io</a>
@@ -36,12 +36,13 @@
 							Podcasts:<br>
 							<ul>
 								<li><a href="https://workingdraft.de/" target="_blank" rel="noopener">Working Draft</a></li>
+								<li><a href="https://expect-exception.fail/" target="_blank" rel="noopener">expect(Exception)</a></li>
 							</ul>
 							<hr />
 							past:<br>
 							<ul>
-								<li><a href="https://expect-exception.fail/" target="_blank" rel="noopener">expect(Exception)</a></li>
 								<li>Program Committee <a href="https://js-kongress.com/" target="_blank" rel="noopener">JSKongress</a></li>
+								<li>Chapter Lead DACH <a href="#" target="_blank" rel="noopener">Frontend Foxes</a></li>
 							</ul>
 						</div>
 						<div>
@@ -87,7 +88,7 @@
 							</ul>
 						</ul>
 					</section>
-					<section>
+					<section data-visibility="hidden">
 						<h2>💙 💚 Sources 💚 💙</h2>
 						<ul>
 							<li><a href="https://markus.oberlehner.net/blog/group-extract-share-working-with-the-vue-composition-api/" target="_blank" rel="noopener">Group, Extract, Share Pattern</a> by <a href="https://markus.oberlehner.net/" target="_blank" rel="noopener">Markus Oberlehner</a></li>
@@ -163,20 +164,20 @@
 					<section data-auto-animate="">
 						<h2>But with the cost of...</h2>
 						<ul>
-							<li>(No) TypeScript support</li>
+							<li>Additional support for TS needed</li>
 						</ul>
 					</section>
 					<section data-auto-animate="">
 						<h2>But with the cost of...</h2>
 						<ul>
-							<li>(No) TypeScript support</li>
+							<li>Additional support for TS needed</li>
 							<li>Lack of Best Practices</li>
 						</ul>
 					</section>
 					<section data-auto-animate="">
 						<h2>But with the cost of...</h2>
 						<ul>
-							<li>(No) TypeScript support</li>
+							<li>Additional support for TS needed</li>
 							<li>Lack of Best Practices</li>
 							<li>Lack of Dev Tool Support</li>
 						</ul>
@@ -185,7 +186,7 @@
 						➡ Dev Tools
 					</section>
 				</section>
-				<section data-auto-animate="">
+				<section  data-visibility="hidden" data-auto-animate="">
 					<section>
 						<h2>Pinia / Vuex</h2>
 						<!-- Screenshot of Vue Docs -->
@@ -254,7 +255,7 @@
 								<span>Stick to Vuex if you don't need to touch this part of codebase at all.</span>
 							</div>
 					</section>
-					<section data-visibility="hidden">
+					<section>
 						<h2>Alternative</h2>
 						<quote>
 							<div style="display:flex; text-align: left; gap: 1rem;">
